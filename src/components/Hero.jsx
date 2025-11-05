@@ -1,16 +1,45 @@
-import { ArrowRight, Zap, Flame } from 'lucide-react';
+import { ArrowRight, Zap } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import Spline from '@splinetool/react-spline';
 
 export default function Hero() {
+  const { scrollY } = useScroll();
+  const y = useTransform(scrollY, [0, 400], [0, -60]);
+  const opacity = useTransform(scrollY, [0, 300], [1, 0.7]);
+  const scale = useTransform(scrollY, [0, 500], [1, 0.95]);
+
   return (
     <section className="relative overflow-hidden bg-neutral-950">
+      {/* Gradient aura overlays */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-1/2 left-1/2 h-[800px] w-[800px] -translate-x-1/2 rounded-full bg-emerald-500/20 blur-3xl" />
-        <div className="absolute top-1/3 right-0 h-72 w-72 bg-lime-400/20 blur-2xl rounded-full" />
+        <div className="absolute -top-1/2 left-1/2 h-[900px] w-[900px] -translate-x-1/2 rounded-full bg-emerald-500/15 blur-3xl" />
+        <div className="absolute top-1/3 right-0 h-72 w-72 rounded-full bg-lime-400/15 blur-2xl" />
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-4 py-24 sm:py-28 lg:py-32">
-        <div className="max-w-3xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-neutral-300">
+      {/* 3D Spline scene as background hero visual */}
+      <motion.div
+        style={{ y, opacity, scale }}
+        className="absolute inset-0"
+        aria-hidden
+      >
+        <div className="h-full w-full">
+          <Spline
+            scene="https://prod.spline.design/EF7JOSsHLk16Tlw9/scene.splinecode"
+            style={{ width: '100%', height: '100%' }}
+          />
+        </div>
+        {/* Soft gradient mask to improve text contrast */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-neutral-950/70 via-neutral-950/30 to-neutral-950" />
+      </motion.div>
+
+      <div className="relative mx-auto max-w-7xl px-4 py-28 sm:py-32 lg:py-40">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+          className="max-w-3xl"
+        >
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-neutral-300 backdrop-blur">
             <Zap className="h-3.5 w-3.5 text-emerald-400" />
             Turning heat into clean electricity
           </div>
@@ -30,34 +59,44 @@ export default function Hero() {
             </a>
             <a
               href="#technology"
-              className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10"
+              className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-6 py-3 text-sm font-semibold text-white backdrop-blur hover:bg-white/10"
             >
               How it works
             </a>
           </div>
 
-          <div className="mt-14 grid grid-cols-2 gap-6 sm:grid-cols-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="mt-14 grid grid-cols-2 gap-6 sm:grid-cols-4"
+          >
             <Stat value="24/7" label="Continuous power" />
             <Stat value="0" label="Moving parts" />
             <Stat value=">95%" label="Uptime" />
             <Stat value="<6 mo" label="ROI in many cases" />
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
-        <div className="mt-16 rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-white/0 p-6 sm:p-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.7 }}
+          className="mt-16 rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-white/0 p-6 sm:p-10 backdrop-blur"
+        >
           <div className="grid gap-6 sm:grid-cols-2">
             <Feature
-              icon={<Flame className="h-5 w-5 text-emerald-400" />}
               title="Hot surface to power"
               description="We mount to exhausts, pipes, ovens, and engines—producing electricity from temperature differences using proven thermoelectric tech."
             />
             <Feature
-              icon={<Zap className="h-5 w-5 text-lime-400" />}
               title="Drop-in and scalable"
               description="Modular units integrate with your existing infrastructure and scale linearly—start small, expand as you see results."
             />
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
@@ -72,11 +111,11 @@ function Stat({ value, label }) {
   );
 }
 
-function Feature({ icon, title, description }) {
+function Feature({ title, description }) {
   return (
     <div className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/5 p-4">
       <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/5">
-        {icon}
+        <div className="h-5 w-5 rounded-full bg-gradient-to-br from-emerald-400 to-lime-400" />
       </div>
       <div>
         <h3 className="text-sm font-semibold text-white">{title}</h3>

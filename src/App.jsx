@@ -3,6 +3,7 @@ import Hero from './components/Hero';
 import Features from './components/Features';
 import Footer from './components/Footer';
 import { Mail, Factory, Server } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function App() {
   return (
@@ -36,7 +37,14 @@ function Technology() {
   ];
 
   return (
-    <section id="technology" className="bg-neutral-950">
+    <motion.section
+      id="technology"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.7 }}
+      className="bg-neutral-950"
+    >
       <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div className="grid items-center gap-10 lg:grid-cols-2">
           <div>
@@ -46,17 +54,30 @@ function Technology() {
             </p>
             <ul className="mt-6 space-y-3">
               {items.map((i) => (
-                <li key={i.title} className="flex items-start gap-3">
+                <motion.li
+                  key={i.title}
+                  initial={{ opacity: 0, x: -10 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4 }}
+                  className="flex items-start gap-3"
+                >
                   <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/5">{i.icon}</div>
                   <div>
                     <p className="text-sm font-semibold">{i.title}</p>
                     <p className="text-sm text-neutral-300">{i.desc}</p>
                   </div>
-                </li>
+                </motion.li>
               ))}
             </ul>
           </div>
-          <div className="relative rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent p-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.6 }}
+            className="relative rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent p-6"
+          >
             <div className="aspect-[4/3] w-full overflow-hidden rounded-xl bg-neutral-900">
               <svg viewBox="0 0 400 300" className="h-full w-full">
                 <defs>
@@ -84,18 +105,25 @@ function Technology() {
             <p className="mt-4 text-xs text-neutral-400">
               Diagram: heat flows across modules to a heat sink, generating electricity continuously.
             </p>
-          </div>
+          </motion.div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }
 
 function Contact() {
   return (
-    <section id="contact" className="bg-neutral-950">
+    <motion.section
+      id="contact"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.6 }}
+      className="bg-neutral-950"
+    >
       <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent p-8">
+        <div className="mx-auto max-w-2xl rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent p-8 backdrop-blur">
           <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">Let’s power your heat with Heather</h2>
           <p className="mt-3 text-neutral-300">
             Share a bit about your application and temperature range. Our engineers will follow up with sizing and expected output.
@@ -147,9 +175,7 @@ function Contact() {
               />
             </div>
             <div className="sm:col-span-2 flex items-center justify-between">
-              <p className="text-xs text-neutral-400">
-                We’ll get back within 2 business days.
-              </p>
+              <p className="text-xs text-neutral-400">We’ll get back within 2 business days.</p>
               <button
                 type="submit"
                 className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-neutral-900 hover:bg-neutral-200"
@@ -160,6 +186,6 @@ function Contact() {
           </form>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }
